@@ -320,6 +320,65 @@ details li{margin:6px 0;line-height:1.4;color:var(--dim)}
 .tgBtns{display:flex;gap:10px}.tgBtns .btn{margin:8px 0}.tgBtns .ghost{flex:0 0 32%}
 .tgBtns #tgFire:disabled{filter:grayscale(.9) brightness(.6)}
 .eqn{font-family:var(--disp);font-size:26px;color:var(--star);text-align:center;min-height:32px}
+/* ---------- claim the grid ---------- */
+.gLogo{font-size:clamp(46px,13vw,64px);line-height:.95;text-align:center;margin:14px 0 10px;background:linear-gradient(#ffe3d1,#ff922b 50%,#e64980);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-stroke:2px #5a1a0b;filter:drop-shadow(0 5px 0 #5a1a0b) drop-shadow(0 10px 18px #000a)}
+.rivals{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}
+.rival{position:relative;display:flex;flex-direction:column;align-items:center;gap:2px;background:linear-gradient(#1b2454,#121a42);border:3px solid var(--line);border-radius:18px;padding:10px 4px 8px;box-shadow:0 4px 0 var(--deep)}
+.rival .bot{width:64px;height:64px}
+.rival b{font-family:var(--disp);font-weight:400;font-size:18px;color:var(--ink)}
+.rival span{font-size:12px;color:var(--dim)}
+.rival em{font-style:normal;font-size:11px;color:#ffc078;margin-top:2px}
+.rival.on{border-color:#ff922b;box-shadow:0 4px 0 #8a3a07,0 0 16px #ff922b55}
+.rival.locked .bot{filter:brightness(0) opacity(.5)}
+.rival.locked{opacity:.6}
+.rival .lk{position:absolute;top:30px;left:50%;transform:translateX(-50%);width:26px;height:26px;color:var(--dim)}
+.how{margin:8px 0 0;padding-left:20px;color:var(--dim);font-size:15px;line-height:1.45}
+.how b{color:var(--ink)}
+.bot .eyes{animation:blink 4s infinite;transform-origin:50px 51px}
+.bot.think .ant{animation:pulse .5s infinite}
+.bot.think{animation:bob .6s ease-in-out infinite}
+#grid{--cpu:#ff8787;--cpuDark:#c92a2a}
+.duel{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.side{display:flex;align-items:center;gap:6px;background:#0b1030cc;border:2px solid var(--line);border-radius:99px;padding:3px 12px 3px 3px}
+.side .face{width:40px;height:40px;border-radius:50%;overflow:hidden;background:#141c45}
+.side .face svg{width:100%;height:100%}
+#gMe svg{transform:scale(1.7) translateY(4%)}
+.side b{font-family:var(--disp);font-weight:400;font-size:22px}
+.side.me{border-color:#0ca678}.side.me b{color:#63e6be}
+.side.cpu{border-color:var(--cpuDark)}.side.cpu b{color:var(--cpu)}
+.side small{font-size:12px;color:var(--dim)}
+.vs{font-family:var(--disp);color:var(--faint);font-size:16px}
+.duel .pill{margin-left:auto}
+.turn{text-align:center;font-family:var(--disp);font-size:24px;margin:4px 0 8px;min-height:30px}
+.turn.me{color:#63e6be;text-shadow:0 0 14px #38d9a966}.turn.cpu{color:var(--cpu)}
+.board{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;padding:10px;background:linear-gradient(#141c45cc,#0b1030cc);border:3px solid var(--line);border-radius:22px;box-shadow:inset 0 2px 0 #ffffff12,0 8px 24px #0005}
+.cell{aspect-ratio:1;display:flex;align-items:center;justify-content:center;border-radius:12px;background:linear-gradient(#26316b,#1b2454);border:2px solid #34428a;box-shadow:0 3px 0 var(--deep);font-family:var(--disp);font-size:clamp(17px,5.4vw,28px);color:var(--ink);transition:background .25s,border-color .25s}
+.cell.me{background:linear-gradient(#63e6be,#0ca678);border-color:#087f5b;color:#05392a;box-shadow:0 3px 0 #064d38,0 0 12px #38d9a955}
+.cell.cpu{background:linear-gradient(var(--cpu),var(--cpuDark));border-color:var(--cpuDark);color:#fff;box-shadow:0 3px 0 #0006}
+.cell.last{outline:3px solid #ffd66e;outline-offset:2px}
+.cell.nope{outline:3px solid var(--warm);outline-offset:2px}
+.cell.win{animation:winGlow .8s ease-in-out infinite alternate}
+@keyframes winGlow{to{transform:scale(1.1);box-shadow:0 0 26px #ffd66e,0 0 0 3px #ffd66e}}
+.strips{margin:12px 0 4px;transition:opacity .2s}
+.strips.wait{opacity:.65;pointer-events:none}
+.frow{display:grid;grid-template-columns:repeat(9,1fr);gap:4px}
+.fx{text-align:center;font-family:var(--disp);color:var(--faint);font-size:20px;line-height:1;margin:3px 0}
+.fac{height:42px;border-radius:12px;border:2px solid #3e4fa0;background:linear-gradient(#2c3a7c,#1d2756);color:var(--dim);font-family:var(--disp);font-size:clamp(17px,4.6vw,22px);box-shadow:0 3px 0 var(--deep);padding:0;transition:transform .08s}
+.fac:active{transform:translateY(2px);box-shadow:0 1px 0 var(--deep)}
+.fac.probe{background:linear-gradient(#ffe7a0,#ffc94a);border-color:#a8700f;color:#4a2c00;box-shadow:0 3px 0 #a8700f,0 0 14px #ffc94a88;transform:translateY(-2px)}
+.fac.ghost{outline:2px dashed #ffc94a88;outline-offset:-4px}
+.gHint{min-height:24px;text-align:center;color:var(--dim);font-size:16px;margin:4px 0}
+.gHint.warm{color:var(--warm);font-family:var(--disp);font-size:18px}
+#gPrompt{min-height:58px}
+.ans.cpu{color:var(--cpu);border-color:var(--cpu)}
+#gPad{margin-top:6px}
+#gPad button{height:50px;font-size:26px}
+.rivalNew{display:flex;gap:12px;align-items:center}.rivalNew .bot{width:70px;height:70px;flex:none}.rivalNew .sub{margin:0}
+@media(min-width:860px){
+  #grid.screen{max-width:960px}
+  .gWrap{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:26px;align-items:start}
+  .gSide .strips{margin-top:0}
+}
 
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
@@ -446,6 +505,35 @@ details li{margin:6px 0;line-height:1.4;color:var(--dim)}
   <div class="tgBtns"><button class="btn ghost" id="tgUndo">Undo</button><button class="btn" id="tgFire">Fire!</button></div>
 </section>
 
+<!-- CLAIM THE GRID: home -->
+<section id="gridHome" class="screen">
+  <div class="hud"><button class="back" id="gBack"><i class="ic"><svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" d="M15 5l-7 7 7 7"/></svg></i>Hub</button></div>
+  <h1 class="gLogo">CLAIM THE<br>GRID</h1>
+  <div class="chips" id="gStats"></div>
+  <div class="section">CHOOSE YOUR RIVAL</div>
+  <div class="rivals" id="gRivals"></div>
+  <div class="panel" id="gRule"></div>
+  <button class="btn" id="gGo">Start duel</button>
+</section>
+
+<!-- CLAIM THE GRID: duel -->
+<section id="grid" class="screen">
+  <div class="duel"><span class="side me"><span class="face" id="gMe"></span><b id="gMeN">0</b></span><span class="vs">VS</span>
+    <span class="side cpu"><span class="face" id="gBot"></span><b id="gBotN">0</b><small id="gBotName"></small></span>
+    <span class="pill"><i class="ic" id="gDustIc"></i><b id="gDust">0</b></span><button class="x" id="gQuit" aria-label="Leave">✕</button></div>
+  <div class="turn" id="gTurn"></div>
+  <div class="gWrap">
+    <div class="board" id="gBoard"></div>
+    <div class="gSide">
+      <div class="strips" id="gStrips"><div class="frow" id="gTop"></div><div class="fx">×</div><div class="frow" id="gBotRow"></div></div>
+      <div class="gHint" id="gHint"></div>
+      <div class="prompt" id="gPrompt"><span id="gQ"></span><span class="ans small" id="gAns"></span></div>
+      <div id="gFix"></div>
+      <div class="pad" id="gPad"></div>
+    </div>
+  </div>
+</section>
+
 <!-- SUMMARY -->
 <section id="summary" class="screen"><div id="sumBody"></div><button class="btn" id="sumBtn">Back to the hub</button></section>
 
@@ -457,7 +545,8 @@ details li{margin:6px 0;line-height:1.4;color:var(--dim)}
 <script src="js/creature.js"></script>
 <script src="js/starmap.js"></script>
 <script src="js/bb.js"></script>
+<script src="js/grid.js"></script>
 <script src="js/hub.js"></script>
-<script>document.getElementById('dustIc').innerHTML=document.getElementById('bbDustIc').innerHTML=document.getElementById('tgDustIc').innerHTML=SM.fx.I.dust;</script>
+<script>document.getElementById('dustIc').innerHTML=document.getElementById('bbDustIc').innerHTML=document.getElementById('tgDustIc').innerHTML=document.getElementById('gDustIc').innerHTML=SM.fx.I.dust;</script>
 </body>
 </html>
