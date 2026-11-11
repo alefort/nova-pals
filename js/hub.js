@@ -6,7 +6,7 @@ const GAMES=[
   {id:'starmap',name:'Star Map',does:'Learn each tricky star with a trick, then lock it in.',ready:true},
   {id:'bedmas',name:'Bracket Blaster',does:'BEDMAS expressions with tricky stars hidden inside.',ready:true,needScout:true},
   {id:'grid',name:'Claim the Grid',does:'Strategy duel. Claim products, get four in a row.',ready:true,needScout:true},
-  {id:'forge',name:'Factor Forge',does:'Smash a number into every pair of stars that makes it.'},
+  {id:'forge',name:'Factor Forge',does:'Smash a number into every pair of stars that makes it.',ready:true,needScout:true},
   {id:'vault',name:'Vault Cracker',does:'Logic puzzles. Use products to crack the code.'},
   {id:'boss',name:'Weekly Boss',does:'Your 6 trickiest stars become a boss. Break its armour.'}
 ];
@@ -58,6 +58,7 @@ $('#games').addEventListener('click',e=>{const b=e.target.closest('.game');if(!b
   if(g==='starmap'){A('tap');SM.starmap.open()}
   else if(g==='bedmas'){if(!SM.st.scouted)return msg('Hatch your egg in Star Map first!');A('tap');SM.bb.open()}
   else if(g==='grid'){if(!SM.st.scouted)return msg('Hatch your egg in Star Map first!');A('tap');SM.grid.open()}
+  else if(g==='forge'){if(!SM.st.scouted)return msg('Hatch your egg in Star Map first!');A('tap');SM.forge.open()}
   else msg('Coming soon. Being built right now!')});
 $('#hubCreature').addEventListener('click',()=>{ // poke your pal
   const s=SM.stage(),c=FX.center($('#hubCreature'));
@@ -88,6 +89,7 @@ function renderGrownups(){
     <li><b>The creature grows from mastery, not time spent.</b> Evolution is tied to stars actually lit, so it can't be ground out. Stardust (for clothes and colours) comes from effort: correct answers, new stars, showing up daily. Nothing bad happens if he skips a day.</li>
     <li><b>No visible timer.</b> Speed is measured quietly. A fact only lights when it comes back in under 3 seconds, and only moves up after spaced checks on different days (1, 2, 4, 8, 16 days). Combos reward accuracy, not speed.</li>
     <li><b>Claim the Grid</b> is a strategy duel. Every square he claims means typing a product, and good play means thinking ahead in products ("if I leave the probes on 7 and 8, the robot can reach 56"). Three robot rivals get smarter as he beats them.</li>
+    <li><b>Factor Forge</b> runs the table backwards: given 24, find every pair that makes it ("24 = 3 × ?"). Knowing a fact from both directions is what makes it stick, and it's the groundwork for division and fractions.</li>
     <li><b>Mostly wins:</b> each flight is mostly facts he knows, with at most ${SM.NEW_PER_DAY} new stars a day. Five minutes daily beats a long session weekly.</li>
   </ul>
   <p class="sub">Flights: ${st.sessions} · Days played: ${st.days.length} · Best combo: ${st.bestCombo||0} · Stardust earned all-time: ${st.dustTotal}</p>
