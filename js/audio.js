@@ -63,7 +63,14 @@ const SFX={
   hatch(){const t=T();[60,64,67,72,76,79,84].forEach((m,i)=>note(m2f(m),t+i*.06,.4,{type:'square',vol:.06,lp:3000}));SFX.sparkle()},
   purchase(){SFX.coin(0);setTimeout(()=>{SFX.coin(3);SFX.sparkle()},90)},
   start(){const t=T();[60,67,72,76,79,84,88].forEach((m,i)=>note(m2f(m),t+i*.07,.35,{type:'square',vol:.06,lp:3200}));note(m2f(36),t,.6,{type:'triangle',vol:.15})},
-  tally(){note(m2f(96),T(),.03,{type:'square',vol:.03,lp:6000})}
+  tally(){note(m2f(96),T(),.03,{type:'square',vol:.03,lp:6000})},
+  click(i){const t=T();noise(t,.03,{ft:'highpass',f:3500,vol:.18});note(m2f(64+((i|0)%12)),t,.04,{type:'square',vol:.04,lp:2500})},
+  unlock(){const t=T();[0,.09,.18].forEach((d,i)=>{noise(t+d,.05,{ft:'highpass',f:2500,vol:.2});note(m2f(60+i*5),t+d,.06,{type:'square',vol:.05,lp:2000})});
+    note(m2f(40),t+.32,.4,{type:'triangle',vol:.2,to:m2f(47)});noise(t+.32,.35,{ft:'lowpass',f:700,vol:.2})},
+  creak(){note(m2f(45),T(),.7,{type:'sawtooth',vol:.04,to:m2f(52),lp:600,a:.1})},
+  roar(){const t=T();note(m2f(40),t,.6,{type:'sawtooth',vol:.09,to:m2f(31),lp:900,a:.04});note(m2f(41),t,.6,{type:'sawtooth',vol:.07,to:m2f(30),lp:700,a:.04,det:30});noise(t,.55,{f:500,to:200,q:.8,vol:.18})},
+  hit(){const t=T();note(m2f(43),t,.14,{type:'square',vol:.14,to:m2f(31),lp:1400});noise(t,.12,{ft:'highpass',f:1500,vol:.3})},
+  crit(){SFX.hit();const t=T();[84,91,96].forEach((m,i)=>note(m2f(m),t+.05+i*.04,.14,{type:'square',vol:.06,lp:5000}));noise(t+.05,.2,{f:6000,vol:.06})}
 };
 function play(name,arg){if(!ctx||ctx.state!=='running')return;try{SFX[name](arg)}catch(e){}}
 
@@ -72,7 +79,9 @@ const SONGS={
   // dreamy: Fmaj7 · Em7 · Dm7 · Cmaj7
   hub:{bpm:80,drums:false,lead:'triangle',chords:[[53,57,60,64],[52,55,59,62],[50,53,57,60],[48,52,55,59]]},
   // bouncy: C · Am · F · G
-  play:{bpm:108,drums:true,lead:'square',chords:[[48,52,55,60],[45,48,52,57],[41,45,48,53],[43,47,50,55]]}
+  play:{bpm:108,drums:true,lead:'square',chords:[[48,52,55,60],[45,48,52,57],[41,45,48,53],[43,47,50,55]]},
+  // tense: Am · F · G · E
+  boss:{bpm:132,drums:true,lead:'square',chords:[[45,48,52,57],[41,45,48,53],[43,47,50,55],[40,44,47,52]]}
 };
 const ARP=[0,1,2,3,2,1,2,3];
 let cur=null,want=null,timer=null,step=0,nextT=0,melody=[];

@@ -7,8 +7,8 @@ const GAMES=[
   {id:'bedmas',name:'Bracket Blaster',does:'BEDMAS expressions with tricky stars hidden inside.',ready:true,needScout:true},
   {id:'grid',name:'Claim the Grid',does:'Strategy duel. Claim products, get four in a row.',ready:true,needScout:true},
   {id:'forge',name:'Factor Forge',does:'Smash a number into every pair of stars that makes it.',ready:true,needScout:true},
-  {id:'vault',name:'Vault Cracker',does:'Logic puzzles. Use products to crack the code.'},
-  {id:'boss',name:'Weekly Boss',does:'Your 6 trickiest stars become a boss. Break its armour.'}
+  {id:'vault',name:'Vault Cracker',does:'Logic puzzles. Use products to crack the code.',ready:true,needScout:true},
+  {id:'boss',name:'Weekly Boss',does:'Your 6 trickiest stars become a boss. Break its armour.',ready:true,needScout:true}
 ];
 
 /* ---------- title ---------- */
@@ -49,7 +49,7 @@ function open(){
   $('#dressBtn').style.display=s===0?'none':'block';
   $('#games').innerHTML=GAMES.map((x,i)=>`<button class="game${x.ready?'':' soon'}${i===0?' feature':''}" data-g="${x.id}" style="--i:${i}">
       <span class="gi">${FX.badge(x.id)}</span><span class="gt"><b>${x.name}</b><span>${x.does}</span></span>
-      ${x.ready&&!(x.needScout&&!st.scouted)?(i===0&&!playedToday?'<span class="ribbon">Daily flight ready!</span>':'')+'<span class="gs">PLAY</span>':`<span class="gs lock"><i class="ic">${FX.I.lock}</i></span>`}</button>`).join('');
+      ${x.ready&&!(x.needScout&&!st.scouted)?(i===0&&!playedToday?'<span class="ribbon">Daily flight ready!</span>':x.id==='boss'&&!SM.boss.state().beaten?'<span class="ribbon">New boss!</span>':'')+'<span class="gs">PLAY</span>':`<span class="gs lock"><i class="ic">${FX.I.lock}</i></span>`}</button>`).join('');
   $('#gear').onclick=settings;
   renderGrownups();SM.show('hub');
 }
@@ -59,7 +59,8 @@ $('#games').addEventListener('click',e=>{const b=e.target.closest('.game');if(!b
   else if(g==='bedmas'){if(!SM.st.scouted)return msg('Hatch your egg in Star Map first!');A('tap');SM.bb.open()}
   else if(g==='grid'){if(!SM.st.scouted)return msg('Hatch your egg in Star Map first!');A('tap');SM.grid.open()}
   else if(g==='forge'){if(!SM.st.scouted)return msg('Hatch your egg in Star Map first!');A('tap');SM.forge.open()}
-  else msg('Coming soon. Being built right now!')});
+  else if(g==='vault'){if(!SM.st.scouted)return msg('Hatch your egg in Star Map first!');A('tap');SM.vault.open()}
+  else if(g==='boss'){if(!SM.st.scouted)return msg('Hatch your egg in Star Map first!');A('tap');SM.boss.open()}});
 $('#hubCreature').addEventListener('click',()=>{ // poke your pal
   const s=SM.stage(),c=FX.center($('#hubCreature'));
   if(s===0){A('crack');FX.shake($('#hubCreature'),6);return}
@@ -90,6 +91,8 @@ function renderGrownups(){
     <li><b>No visible timer.</b> Speed is measured quietly. A fact only lights when it comes back in under 3 seconds, and only moves up after spaced checks on different days (1, 2, 4, 8, 16 days). Combos reward accuracy, not speed.</li>
     <li><b>Claim the Grid</b> is a strategy duel. Every square he claims means typing a product, and good play means thinking ahead in products ("if I leave the probes on 7 and 8, the robot can reach 56"). Three robot rivals get smarter as he beats them.</li>
     <li><b>Factor Forge</b> runs the table backwards: given 24, find every pair that makes it ("24 = 3 × ?"). Knowing a fact from both directions is what makes it stick, and it's the groundwork for division and fractions.</li>
+    <li><b>Vault Cracker</b> is logic: clues like "A × B = 56" and "A is bigger than B" pin down a secret code. Every puzzle is checked to have exactly one answer.</li>
+    <li><b>Weekly Boss</b> takes his six trickiest facts each Monday (most misses, slowest, least practised) and makes them the boss's armour. A miss never hurts him; it shows the trick and he tries again. Beating it once a week earns a trophy.</li>
     <li><b>Mostly wins:</b> each flight is mostly facts he knows, with at most ${SM.NEW_PER_DAY} new stars a day. Five minutes daily beats a long session weekly.</li>
   </ul>
   <p class="sub">Flights: ${st.sessions} · Days played: ${st.days.length} · Best combo: ${st.bestCombo||0} · Stardust earned all-time: ${st.dustTotal}</p>
