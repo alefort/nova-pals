@@ -13,7 +13,8 @@ function bs(){const st=SM.st;if(!st.boss)st.boss={wk:-1,facts:[],beat:-1,wins:0,
 function trickiest(){ // the six facts that most need work: misses, low boxes, slow answers, the core families
   const F=SM.facts().filter(f=>f.a>=2&&f.b>=2&&f.a!==10&&f.b!==10&&f.a!==11&&f.b!==11);
   const score=f=>(f.box>=1?20:0)+f.wrong*4+(5-f.box)*3+(SM.isCore(f.a,f.b)?6:0)+(f.best?Math.min(f.best,9000)/1000:3)+Math.random();
-  return F.sort((x,y)=>score(y)-score(x)).slice(0,6).map(f=>[f.a,f.b]);
+  const C=F.filter(f=>SM.isCore(f.a,f.b)),P=C.length>=6?C:F;
+  return P.sort((x,y)=>score(y)-score(x)).slice(0,6).map(f=>[f.a,f.b]);
 }
 function boss(){const b=bs(),w=week();if(b.wk!==w){b.wk=w;b.facts=trickiest();SM.save()}
   return {name:NAMES[w%NAMES.length],skin:SKINS[w%SKINS.length],facts:b.facts,beaten:b.beat===w}}
@@ -44,7 +45,7 @@ function open(){
   SM.show('bossHome');
 }
 $('#bBack').onclick=()=>{A('back');SM.hub.open()};
-$('#bGo').onclick=()=>{A('tap');start()};
+$('#bGo').onclick=SM.once(()=>{A('tap');start()});
 
 /* ---------- fight ---------- */
 let G=null;

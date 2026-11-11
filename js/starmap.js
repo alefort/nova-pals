@@ -37,7 +37,7 @@ function openCard(r,c){
 }
 function closeCard(){A('back');$('#modal').classList.remove('on')}
 $('#modal').addEventListener('click',e=>{if(e.target.id==='modal')closeCard()});
-$('#goBtn').onclick=()=>{A('tap');const st=SM.st;if(!st.intro)return startIntro();st.scouted?startSession():startScout()};
+$('#goBtn').onclick=SM.once(()=>{A('tap');const st=SM.st;if(!st.intro)return startIntro();st.scouted?startSession():startScout()});
 $('#smBack').onclick=()=>{A('back');SM.hub.open()};
 
 /* ---------- intro: 144 is really 28 ---------- */
@@ -82,7 +82,7 @@ document.addEventListener('keydown',e=>{
   if(!$('#play').classList.contains('on')||!S)return;
   if(/^[0-9]$/.test(e.key))press(e.key);else if(e.key==='Backspace')press('⌫');else if(e.key==='Enter'){e.preventDefault();press('✓')}
 });
-function target(){return S.phase==='teach'?document.querySelector('.step.cur .slot'):$('#ans')}
+function target(){return S.phase==='teach'?document.querySelector('#teachView .step.cur .slot'):$('#ans')}
 function paint(){const t=target();if(t)t.textContent=S.typed}
 function digit(d){if(!S||S.lock||S.phase==='teachDone'||S.typed.length>=3)return;S.typed+=d;SM.audio.play('key',+d);paint();FX.pop(target(),1.08)}
 function back(){if(!S||S.lock)return;S.typed=S.typed.slice(0,-1);A('back');paint()}
@@ -134,7 +134,7 @@ function present(){
   if(!S)return;progress();S.typed='';S.lock=false;
   const it=S.queue[S.i];
   $('#notyet').style.display=S.mode==='scout'?'block':'none';
-  if(it.teach)return showTeach(it.f);
+  if(it.teach){$('#fix').innerHTML='';return showTeach(it.f)}
   S.phase='ask';$('#askView').style.display='block';$('#teachView').innerHTML='';
   const flip=Math.random()<.5;it.x=flip?it.f.b:it.f.a;it.y=flip?it.f.a:it.f.b;
   $('#q').innerHTML=`${it.x}<span class="times">×</span>${it.y}`;
@@ -194,12 +194,12 @@ function showTeach(f){
   const c=FX.center($('.newstar'));FX.burst(c.x,c.y,{n:24,colors:FX.RAINBOW});
 }
 function teachEnter(){
-  if(!S.typed)return;const T=S.teach,want=T.s.steps[T.step][1],row=document.querySelectorAll('.step')[T.step];
+  if(!S.typed)return;const T=S.teach,want=T.s.steps[T.step][1],row=document.querySelectorAll('#teachView .step')[T.step];
   if(+S.typed===want){
     row.classList.remove('cur');row.classList.add('done');FX.pop(row,1.04);SM.audio.play('correct',T.step*2);T.step++;T.tries=0;S.typed='';
-    if(T.step<T.s.steps.length){document.querySelectorAll('.step')[T.step].classList.add('cur')}
+    if(T.step<T.s.steps.length){document.querySelectorAll('#teachView .step')[T.step].classList.add('cur')}
     else{
-      react('happy');S.phase='teachDone';
+      react('happy');S.phase='teachDone';S.lock=true;const run=S;setTimeout(()=>{if(S===run)S.lock=false},700);
       $('#tEnd').innerHTML=`<div class="final">So ${T.s.anchor} × ${T.s.o} = <b>${T.s.p}</b></div>
         <p class="say">Say it out loud once:<br><i>"${SM.words(T.s.anchor)} ${SM.plural(T.s.o)} are ${SM.words(T.s.p)}"</i></p>
         ${T.s.hook?`<div class="hook">💡 ${T.s.hook}</div>`:''}<p class="say">Press ✓ when you've said it.</p>`;

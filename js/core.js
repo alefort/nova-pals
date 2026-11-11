@@ -54,6 +54,7 @@ api.practice=function(a,b,ok,ms){
     if(ms<FAST&&f.box>=1&&f.due<=t){f.box=Math.min(5,f.box+1);f.due=t+INTERVAL[f.box]}}
   else{f.wrong++;if(f.box>=3)f.box=2;if(f.box>=1)f.due=Math.min(f.due,t+1)}
 };
+api.once=fn=>{let t=0;return(...a)=>{const n=Date.now();if(n-t<1200)return;t=n;return fn(...a)}};
 api.markDay=function(){const t=today();if(!api.st.days.includes(t))api.st.days.push(t)};
 api.earn=function(n){api.st.dust+=n;api.st.dustTotal+=n;return n};
 

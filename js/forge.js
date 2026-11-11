@@ -27,7 +27,7 @@ function open(){
   SM.show('forgeHome');
 }
 $('#fBack').onclick=()=>{A('back');SM.hub.open()};
-$('#fGo').onclick=()=>{A('tap');start()};
+$('#fGo').onclick=SM.once(()=>{A('tap');start()});
 
 /* ---------- play ---------- */
 let G=null;
@@ -95,7 +95,7 @@ async function enter(){
   }
   if(!G.wrongOnce)SM.practice(f,q,true,ms);
   const p=[Math.min(f,q),Math.max(f,q)];G.found.push(p);G.sel=null;G.typed='';G.pairsN++;fs().pairs++;$('#fFix').innerHTML='';
-  G.lock=true;draw();await strike();
+  G.lock=true;draw();const run=G;await strike();if(G!==run)return;
   const ing=document.createElement('span');ing.className='ingot';ing.dataset.p=p[0];ing.textContent=`${p[0]} × ${p[1]}`;$('#fIngots').appendChild(ing);
   FX.anim(ing,[{transform:'translateY(-60px) scale(.3)',opacity:0},{transform:'none',opacity:1}],{duration:380,easing:'cubic-bezier(.3,1.5,.5,1)'});
   addDust(1,ing);

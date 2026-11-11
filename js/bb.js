@@ -94,7 +94,7 @@ function open(){
 }
 $('#bbLevels').addEventListener('click',e=>{const t=e.target.closest('.lvl');if(!t||t.disabled)return;A('tap');bb().level=+t.dataset.l;SM.save();open()});
 $('#bbBack').onclick=()=>{A('back');SM.hub.open()};
-$('#bbGo').onclick=()=>{A('tap');start()};
+$('#bbGo').onclick=SM.once(()=>{A('tap');start()});
 $('#bbTgt').onclick=()=>{const t=$('#bbTgt');if(bb().unlocked<2){A('back');FX.shake(t,5);const r=$('#bbRule'),o=r.innerHTML;
   r.innerHTML='<b>Target mission needs brackets.</b><br>Get 6 perfect blasts in a Level 1 mission to unlock Level 2 and Target.';FX.enter(r);setTimeout(()=>{if(r.innerHTML.startsWith('<b>Target'))r.innerHTML=o},3500);return}
   A('tap');tStart()};
@@ -114,7 +114,7 @@ function press(k){const b=pad.querySelector(`[data-k="${k}"]`);if(b){b.classList
 document.addEventListener('keydown',e=>{
   if(!$('#bb').classList.contains('on')||!G||$('#cine').classList.contains('on'))return;
   if(/^[0-9]$/.test(e.key))press(e.key);else if(e.key==='Backspace')press('⌫');
-  else if(e.key==='Enter'){e.preventDefault();if(!G.sel&&G.cursor!=null)tapOp(G.cursor);else press('✓')}
+  else if(e.key==='Enter'){e.preventDefault();if(G.lock)return;if(!G.sel&&G.cursor!=null)tapOp(G.cursor);else press('✓')}
   else if(e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault();if(G.sel)return;const ops=G.tk.map((t,i)=>t.t==='op'||t.t==='pow'?i:-1).filter(i=>i>=0);
     let j=ops.indexOf(G.cursor);j=j<0?0:(j+(e.key==='ArrowRight'?1:-1)+ops.length)%ops.length;G.cursor=ops[j];A('tap');render()}
 });
@@ -167,8 +167,8 @@ function enter(){
     G.steps++;if(!s.missed)G.stepsRight++;if(fact&&!s.missed)G.factsRight++;
     A('correct',G.combo+G.stepsRight%6);G.lock=true;
     document.querySelectorAll('#bbExpr .sel').forEach(el=>FX.anim(el,[{transform:'scale(1)',opacity:1},{transform:'scale(.3)',opacity:0}],{duration:220,fill:'forwards',easing:'ease-in'}));
-    setTimeout(()=>{
-      G.tk=apply(G.tk,s);G.sel=null;G.typed='';$('#bbFix').innerHTML='';render();
+    const run=G;setTimeout(()=>{if(G!==run)return;
+      G.tk=apply(G.tk,s);G.sel=null;G.cursor=null;G.typed='';$('#bbFix').innerHTML='';render();
       const born=$(`#bbExpr [data-i="${G.tk.idx}"]`);
       if(born){born.classList.add('born');const c=FX.center(born);FX.burst(c.x,c.y,{n:14});addDust(1,born)}
       if(G.tk.length===1)blast();else G.lock=false;
@@ -184,7 +184,7 @@ function enter(){
 }
 function addDust(n,el){const run=G;run.dust+=SM.earn(n);const pd=$('#bbDust');
   FX.fly(el,pd,n,i=>{run.shown++;pd.textContent=run.shown;A('coin',i);FX.pop(pd.parentNode,1.15)})}
-async function blast(){
+async function blast(){const run=G;
   const el=$('#bbExpr .num'),c=FX.center(el);
   G.n++;bb().blasts++;
   if(G.clean){G.perfectN++;bb().perfect++;G.combo++;G.best=Math.max(G.best,G.combo)}else G.combo=0;
@@ -193,7 +193,7 @@ async function blast(){
   FX.anim(el,[{transform:'scale(1)'},{transform:'scale(1.8)',opacity:1},{transform:'scale(2.4)',opacity:0}],{duration:700,fill:'forwards'});
   const b=$('#bbBuddy');b.classList.remove('happy');void b.offsetWidth;b.classList.add('happy');
   if(G.clean)addDust(3,el);
-  SM.save();await sleep(1300);
+  SM.save();await sleep(1300);if(G!==run)return;
   if(G.n>=PER_MISSION)finish();else newExpr();
 }
 $('#bbQuit').onclick=()=>{A('tap');if(confirm('Leave this mission? Stardust you earned is kept.')){G=null;SM.save();open()}};

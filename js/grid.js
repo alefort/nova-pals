@@ -65,7 +65,7 @@ function open(){
 }
 $('#gRivals').addEventListener('click',e=>{const t=e.target.closest('.rival');if(!t||t.disabled)return;A('tap');gs().rival=+t.dataset.r;SM.save();open()});
 $('#gBack').onclick=()=>{A('back');SM.hub.open()};
-$('#gGo').onclick=()=>{A('tap');start()};
+$('#gGo').onclick=SM.once(()=>{A('tap');start()});
 
 /* ---------- duel ---------- */
 let G=null;

@@ -53,7 +53,7 @@ function open(){
   SM.show('vaultHome');
 }
 $('#vBack').onclick=()=>{A('back');SM.hub.open()};
-$('#vGo').onclick=()=>{A('tap');start()};
+$('#vGo').onclick=SM.once(()=>{A('tap');start()});
 
 /* ---------- play ---------- */
 let G=null;
